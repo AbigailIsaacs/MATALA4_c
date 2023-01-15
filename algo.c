@@ -78,6 +78,9 @@ void TSP(Graph* g){
 	int *array;
 	scanf("%d",&size);
 	array = (int*)malloc(size * sizeof(int));
+	if(array==NULL){
+		exit(-1);
+	}
 	for (int i=0; i<size;i++){
 		scanf("%d", &array[i]);
 	}
@@ -125,8 +128,14 @@ int** allComb(int size,int array[],int *numComb){
 	}
 	*numComb =num_combinations;
 	int** matrix = (int**)malloc(num_combinations * sizeof(int*));
+	if(matrix==NULL){
+		exit(-1);
+	}
 	for (int i = 0; i < num_combinations; i++) {
 		matrix[i] = (int*)malloc(k * sizeof(int));
+		if(matrix[i]==NULL){
+			exit(-1);
+		}
 	}
 
 	int row = 0;
