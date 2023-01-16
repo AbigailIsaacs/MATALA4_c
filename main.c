@@ -27,10 +27,17 @@ int main() {
 				return -1;
 			}
 			letter ='f';
-			succeed = insertInputToGraph(g, &letter);
-			if(succeed==-1){
-				freeGraph(g);
-				return -1;
+			if (V!=0){
+				succeed = insertInputToGraph(g, &letter);
+				if(succeed==-1){
+					freeGraph(g);
+					return -1;
+				}
+			}
+			else{
+				if(scanf("%s",&letter) == EOF){
+					letter='a';
+				}
 			}
 			notFirstA=1;
 

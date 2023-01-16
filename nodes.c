@@ -17,6 +17,9 @@ Graph* createGraph(int V) {
 		return NULL;
 	}
 	g->V = V;
+	if (V==0){
+		return g;
+	} 
 	g->nodes = (Node*)malloc(V * sizeof(Node));
 	//if malloc failed
 	if(g->nodes ==NULL){

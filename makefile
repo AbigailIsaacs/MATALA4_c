@@ -2,10 +2,10 @@ CFLAGS = -Wall -g
 CC = gcc
 AR = ar
 
-all: main
+all: graph
 
-main: main.o nodes.o algo.o
-	$(CC) $(CFLAGS) -o main nodes.o main.o algo.o
+graph: main.o nodes.o algo.o
+	$(CC) $(CFLAGS) -o graph nodes.o main.o algo.o
 
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c -o main.o
@@ -19,4 +19,4 @@ algo.o: algo.c
 .PHONY: clean all
 
 clean: 
-	rm -f *.o main
+	rm -f *.o graph
