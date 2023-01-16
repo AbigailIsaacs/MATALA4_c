@@ -18,6 +18,7 @@ Graph* createGraph(int V) {
 	}
 	g->V = V;
 	if (V==0){
+		g->nodes=NULL;
 		return g;
 	} 
 	g->nodes = (Node*)malloc(V * sizeof(Node));
@@ -57,13 +58,15 @@ int insertInputToGraph(Graph* g,char * letter) {
 			
 		}
 		g->nodes[i].numEdges = j/2;
-		newNodeData[j]='\0';
 		if(j!=0){
 			g->nodes[i].edges = createEdges(newNodeData,&(g->nodes[i]),g->nodes[i].name,j/2);
 			if(g->nodes[i].edges==NULL){
 				printf("memory error");
 				return -1;
 			}
+		}
+		else{
+			g->nodes[i].edges = NULL;
 		}
 		i++;
 		
@@ -76,14 +79,20 @@ int insertInputToGraph(Graph* g,char * letter) {
 	return 0;
 }
 
-Edge* createEdges(int newNodeData[] ,Node* pNode,int name, int numEdges){	
-	pNode-> edges = (Edge*)malloc(numEdges*sizeof(Edge));
-	//if malloc failed
-	if(pNode-> edges==NULL){
-		printf("memory error");
-		return NULL;
+Edge* createEdges(int newNodeData[] ,Node* pNode,int name, int numEdges){
+	if(numEdges==0){
+		pNode->edges=NULL;
+	}
+	else{	
+		pNode-> edges = (Edge*)malloc(numEdges*sizeof(Edge));
+		//if malloc failed
+		if(pNode-> edges==NULL){
+			printf("memory error");
+			return NULL;
+		}
 	}
 	int j=0;
+
 	for(int i=0; i<numEdges ;i++){
 		pNode->edges[i].src = name;
 		pNode->edges[i].dest = newNodeData[j++];
@@ -104,15 +113,22 @@ char isFineLetter (char str[]){
 
 void freeGraph(Graph *g){
 	for( int i=0; i<g->V; i++){
-		free(g->nodes[i].edges);
+		if(g->nodes[i].edges!=NULL){
+			free(g->nodes[i].edges);
+		}
 	}
-	free(g->nodes);
-	free(g);
+	if(g->nodes!=NULL){ 
+		free(g->nodes);
+	}
+	if(g!=NULL){
+		free(g);
+	}
+	
 }
 
 int createNode(Graph *g, char * letter){
 	int length = g->V;	
-	int newName;
+	int newName=0;
 	int alreadyNode=0;
 	int noWhile = 1;
 	char input[MAX_NUMBERALS];
@@ -133,7 +149,6 @@ int createNode(Graph *g, char * letter){
 		newNodeData[j++]=number;
 	}
 		
-	newNodeData[j]='\0';
 	for(int i = 0; i< length; i++){
 		if(g->nodes[i].name == newName){
 			free(g->nodes[i].edges);
@@ -145,14 +160,16 @@ int createNode(Graph *g, char * letter){
 					return -1;
 				}
 			}
+			else{
+				g->nodes[i].edges=NULL;
+			}
 			alreadyNode= 1;
 			break;
 		}
 		
 	}
 	if(!alreadyNode){
-		Node* n ;
-		n = (Node*)realloc(g->nodes, (length+1)* sizeof(Node));
+		Node* n = (Node*)realloc(g->nodes, (length+1)* sizeof(Node));
 		if (n==NULL){
 			return -1;
 		}
@@ -167,6 +184,9 @@ int createNode(Graph *g, char * letter){
 				return -1;
 			}
 		}
+		else{
+			g->nodes[length].edges=	NULL;
+		}
 	}
 	if(*letter=='f'){
 		*letter = 'a';
@@ -178,7 +198,7 @@ int createNode(Graph *g, char * letter){
 
 void deleteNode(Graph *g){
 	int length = g->V;
-	int deleteName;
+	int deleteName = 0;
 	scanf("%d ", &deleteName);
 	for(int i = 0; i< length; i++){
 		if(g->nodes[i].name == deleteName){
@@ -186,7 +206,13 @@ void deleteNode(Graph *g){
 			g->nodes[i].numEdges = g->nodes[length-1].numEdges;
 			free(g->nodes[i].edges);
 			g->nodes[i].edges = g->nodes[length-1].edges;
-			g->nodes= (Node*)realloc(g->nodes, (length-1)* sizeof(Node));
+			if(length ==1){
+				g->nodes = NULL;
+			}
+			else{
+				g->nodes= (Node*)realloc(g->nodes, (length-1)* sizeof(Node));
+				
+			}
 			g->V = length-1 ;
 			break;	
 		}

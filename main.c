@@ -9,8 +9,8 @@ int main() {
 	
 	char  letter ='f';
 	int V =0;
-	Graph* g ;
-	int succeed;
+	Graph* g =NULL;
+	int succeed = 0;
 	scanf("%c ", &letter);
 	int notFirstA = 0;
 	while (letter!= 'a'){
@@ -23,7 +23,6 @@ int main() {
 			scanf("%d", &V);
 			g = createGraph(V);
 			if(g==NULL){
-				freeGraph(g);
 				return -1;
 			}
 			letter ='f';
@@ -60,7 +59,7 @@ int main() {
 		}
 		if(letter=='S'){
 			letter ='f';
-			int s, t;
+			int s = 0, t=0;
 			scanf("%d",&s);
 			scanf("%d",&t);	
 			int shortest = shortPath(g,s,t);

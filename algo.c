@@ -8,7 +8,7 @@
 
 int shortPath (Graph* g,int s,int t){
 	
-	Node *toPrint;
+	Node *toPrint = NULL;
 
 	for (int i = 0; i< g->V ; i++){
 		if(g->nodes[i].name == s){
@@ -21,8 +21,9 @@ int shortPath (Graph* g,int s,int t){
 		g->nodes[i].color = 1;
 	}
 
-	Node *start;
+	Node *start = NULL;
 	int notDone = 1;
+	Node *toRelax = NULL;
 	while(notDone){
 		int min = INT_MAX;
 		for (int i = 0; i< g->V ; i++){
@@ -35,7 +36,7 @@ int shortPath (Graph* g,int s,int t){
 	
 		}
 		for(int i=0; i< start->numEdges; i++){
-			Node *toRelax;
+			
 			for(int j=0; j<g->V;j++){
 				if(start->edges[i].dest == g->nodes[j].name){
 					if( g->nodes[j].color==0){
@@ -74,10 +75,9 @@ int shortPath (Graph* g,int s,int t){
 
 void TSP(Graph* g){
 
-	int size;
-	int *array;
+	int size= 0;;
 	scanf("%d",&size);
-	array = (int*)malloc(size * sizeof(int));
+	int *array = (int*)malloc(size * sizeof(int));
 	if(array==NULL){
 		exit(-1);
 	}
